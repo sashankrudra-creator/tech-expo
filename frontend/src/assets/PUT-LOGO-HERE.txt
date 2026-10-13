@@ -1,0 +1,2 @@
+Put your school logo here as school-logo.png (or .jpg / .svg / .webp).
+The website picks it up automatically; until then a dashed placeholder is shown.

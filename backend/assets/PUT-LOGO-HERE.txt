@@ -1,0 +1,5 @@
+Put your school logo in this folder as:  school-logo.png   (or .jpg — then change CERT_LOGO_PATH in .env)
+
+It is printed at the top of every PDF certificate.
+A square-ish PNG with a transparent or white background, about 500x500 px, looks best.
+If no logo is here, certificates are still made, just without the logo.

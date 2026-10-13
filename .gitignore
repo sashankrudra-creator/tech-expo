@@ -1,0 +1,19 @@
+# secrets — never commit these
+backend/.env
+backend/serviceAccountKey.json
+backend/*firebase-adminsdk*.json
+frontend/.env
+
+# Python
+backend/venv/
+backend/.venv/
+__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/dist-preview/
+
+.DS_Store
+.vscode/
