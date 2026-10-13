@@ -64,20 +64,33 @@ class FirestoreRepository:
                 raw = Config.FIREBASE_CREDENTIALS_JSON.strip()
                 if (raw.startswith("'") and raw.endswith("'")) or (raw.startswith('"') and raw.endswith('"')):
                     raw = raw[1:-1].strip()
-                try:
-                    data = json.loads(raw)
-                except Exception as json_err:
+
+                data = None
+                if not raw.startswith("{"):
                     try:
-                        import ast
-                        data = ast.literal_eval(raw)
+                        import base64
+                        decoded_bytes = base64.b64decode(raw)
+                        data = json.loads(decoded_bytes.decode("utf-8"))
                     except Exception:
-                        raise ServiceUnavailable(f"Failed to parse FIREBASE_CREDENTIALS_JSON: {json_err}")
+                        data = None
+
+                if data is None:
+                    try:
+                        data = json.loads(raw)
+                    except Exception as json_err:
+                        try:
+                            import ast
+                            data = ast.literal_eval(raw)
+                        except Exception:
+                            raise ServiceUnavailable(f"Failed to parse FIREBASE_CREDENTIALS_JSON: {json_err}")
+
                 if isinstance(data, str):
                     data = json.loads(data)
                 if isinstance(data, dict) and "private_key" in data:
                     pk = data["private_key"]
-                    if "\\n" in pk and "\n" not in pk:
-                        data["private_key"] = pk.replace("\\n", "\n")
+                    if "\\n" in pk:
+                        pk = pk.replace("\\n", "\n")
+                    data["private_key"] = pk
                 cred = credentials.Certificate(data)
             elif Config.FIREBASE_CREDENTIALS.exists():
                 cred = credentials.Certificate(str(Config.FIREBASE_CREDENTIALS))
