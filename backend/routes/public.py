@@ -12,7 +12,14 @@ PUBLIC_FIELDS = ("id", "name", "email", "created_at")
 
 @bp.get("/health")
 def health():
-    return jsonify(ok=True, database=Config.DATABASE)
+    db_ok = True
+    db_err = None
+    try:
+        get_repo()
+    except Exception as e:
+        db_ok = False
+        db_err = f"{type(e).__name__}: {e}"
+    return jsonify(ok=True, database=Config.DATABASE, db_connected=db_ok, db_error=db_err)
 
 
 @bp.post("/register")
