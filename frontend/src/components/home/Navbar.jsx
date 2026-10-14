@@ -10,6 +10,7 @@ export default function Navbar() {
       <div className="school">{SCHOOL.name}<small>presents {EVENT.name} {EVENT.year}</small></div>
       <nav className="links">
         <a href="#zones">What's there</a>
+        <a href="#gallery">Past Expos</a>
         <a href="#schedule">Schedule</a>
         <a href="#school">About us</a>
         <Link to="/admin" className="admin-link">Admin Portal</Link>

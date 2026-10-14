@@ -252,6 +252,126 @@ tr:last-child td { border-bottom: 0 }
 .modal-bar .demo { margin: 0 auto 0 0; color: #fff }
 .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: #fff; font-weight: 800; padding: 10px 20px; border-radius: 999px; z-index: 200; font-size: 14px; max-width: calc(100% - 32px); text-align: center }
 
+/* ========================================================
+   Gallery Showcase Styles
+   ======================================================== */
+.gallery-section { position: relative }
+.gallery-section.standalone { padding-block: 20px 72px; min-height: 80vh }
+.back-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; color: var(--blue); text-decoration: none; font-size: 15px; background: var(--sky); padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--line); transition: all .2s; margin-bottom: 12px }
+.back-link:hover { background: var(--blue); color: #fff; border-color: var(--blue); transform: translateX(-3px) }
+.gallery-header { margin-bottom: 32px }
+.gallery-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px }
+.gallery-tab { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 8px 18px; font-weight: 800; font-size: 14px; color: var(--muted); cursor: pointer; transition: all .2s ease }
+.gallery-tab:hover { border-color: var(--blue); color: var(--ink); transform: translateY(-2px) }
+.gallery-tab.active { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: 0 4px 14px rgba(29, 43, 79, .2) }
+.count-pill { background: rgba(0, 0, 0, 0.08); font-size: 11px; padding: 2px 7px; border-radius: 999px; font-family: var(--mono) }
+.gallery-tab.active .count-pill { background: var(--sun); color: var(--ink) }
+
+/* Gallery Carousel Layout */
+.gallery-carousel-wrapper { position: relative; width: 100%; display: flex; align-items: center }
+.gallery-carousel-track { display: flex; flex-direction: row; align-items: stretch; gap: 22px; overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; scrollbar-width: none; padding-block: 16px 26px; padding-inline: 6px; width: 100% }
+.gallery-carousel-track::-webkit-scrollbar { display: none }
+.gallery-carousel-track .gallery-card { flex: 0 0 340px; width: 340px; min-width: 340px; max-width: 340px; scroll-snap-align: start }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; align-items: stretch }
+.gallery-card { background: var(--paper); border: 2px solid var(--line); border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; cursor: pointer; outline: none }
+.gallery-card:hover, .gallery-card:focus-visible { transform: translateY(-8px); box-shadow: 0 18px 36px rgba(29, 43, 79, .12); border-color: var(--blue) }
+.gallery-card.spotlight { border-color: #ffd978; background: linear-gradient(180deg, #ffffff 0%, #fffdf5 100%); box-shadow: 0 10px 25px rgba(255, 197, 49, .15) }
+.gallery-card.spotlight:hover { border-color: var(--coral); box-shadow: 0 20px 40px rgba(255, 111, 89, .2) }
+
+/* Carousel Navigation Arrows */
+.carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 52px; height: 52px; border-radius: 50%; background: #ffffff; border: 2px solid var(--line); color: var(--ink); display: grid; place-items: center; cursor: pointer; z-index: 10; box-shadow: 0 8px 24px rgba(29, 43, 79, 0.16); transition: transform .2s ease, background .2s ease, box-shadow .2s ease, opacity .2s ease }
+.carousel-arrow:hover:not(:disabled) { background: var(--ink); color: #ffffff; border-color: var(--ink); transform: translateY(-50%) scale(1.08); box-shadow: 0 12px 28px rgba(29, 43, 79, 0.25) }
+.carousel-arrow:disabled { opacity: 0.22; cursor: not-allowed; box-shadow: none; pointer-events: none }
+.carousel-arrow.prev { left: -26px }
+.carousel-arrow.next { right: -26px }
+.carousel-arrow svg { width: 26px; height: 26px }
+
+@media (max-width: 1220px) {
+  .carousel-arrow.prev { left: -12px }
+  .carousel-arrow.next { right: -12px }
+}
+@media (max-width: 768px) {
+  .gallery-carousel-track .gallery-card { flex: 0 0 min(310px, 82vw); width: min(310px, 82vw); min-width: min(310px, 82vw); max-width: min(310px, 82vw) }
+  .carousel-arrow { width: 44px; height: 44px }
+  .carousel-arrow svg { width: 22px; height: 22px }
+  .carousel-arrow.prev { left: -6px }
+  .carousel-arrow.next { right: -6px }
+}
+
+/* Media wrapper */
+.gallery-media-wrapper { position: relative; width: 100%; aspect-ratio: 16 / 10; background: #0f172a; overflow: hidden }
+.video-container, .img-container { width: 100%; height: 100%; position: relative }
+.video-container video, .img-container img { width: 100%; height: 100%; object-fit: cover; display: block }
+.img-container img { transition: transform .4s ease }
+.gallery-card:hover .img-container img { transform: scale(1.06) }
+
+/* Video controls & Badges */
+.video-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 58px; height: 58px; border-radius: 50%; background: rgba(29, 43, 79, 0.85); backdrop-filter: blur(8px); border: 2px solid #fff; color: #fff; display: grid; place-items: center; cursor: pointer; transition: transform .2s ease, background .2s ease; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); z-index: 4 }
+.video-play-btn svg { width: 24px; height: 24px; margin-left: 3px }
+.video-play-btn.playing svg { margin-left: 0 }
+.video-play-btn:hover { transform: translate(-50%, -50%) scale(1.12); background: var(--coral) }
+.video-duration-pill, .gif-badge { position: absolute; top: 12px; left: 12px; background: rgba(29, 43, 79, 0.85); backdrop-filter: blur(6px); color: #fff; font-family: var(--mono); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; z-index: 3 }
+.pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: #ff4757; animation: pulse 1.4s infinite }
+.pulse-dot.teal { background: var(--teal) }
+
+.gallery-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 60%, rgba(15, 23, 42, 0.75) 100%); opacity: 0; display: flex; align-items: flex-end; justify-content: flex-end; padding: 14px; transition: opacity .25s ease; pointer-events: none }
+.gallery-card:hover .gallery-overlay { opacity: 1 }
+.expand-hint { color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; background: rgba(0, 0, 0, 0.6); padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(4px) }
+.expand-hint svg { width: 14px; height: 14px }
+
+/* Card Information */
+.gallery-info { padding: 20px; display: flex; flex-direction: column; flex: 1 }
+.gallery-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px }
+.pill-badge { display: inline-block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; padding: 3px 10px; border-radius: 999px }
+.pill-badge.coral { background: #ffe6e1; color: var(--coral) }
+.pill-badge.teal { background: var(--mint); color: var(--teal) }
+.pill-badge.blue { background: #e2eeff; color: var(--blue) }
+.pill-badge.sun { background: #fff3d1; color: #b87b00 }
+.gallery-year { font-family: var(--mono); font-size: 12px; color: var(--muted); font-weight: 600 }
+.gallery-info h3 { font-size: 20px; margin-bottom: 8px; color: var(--ink) }
+.gallery-info p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 16px; flex: 1 }
+.gallery-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto }
+.tag-chip { background: var(--bg); border: 1px solid var(--line); color: var(--ink); font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 8px }
+.tag-chip.more { color: var(--muted); font-style: italic }
+
+/* Lightbox Modal */
+.gallery-modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); z-index: 300; display: grid; place-items: center; padding: 20px; animation: pagein .25s ease both }
+.gallery-modal-card { position: relative; width: min(1040px, 100%); max-height: 90vh; background: #fff; border-radius: 28px; overflow: hidden; box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column }
+.modal-close-btn { position: absolute; top: 14px; right: 14px; width: 38px; height: 38px; border-radius: 50%; background: #fff; border: 2px solid var(--line); color: var(--ink); display: grid; place-items: center; font-size: 16px; font-weight: 800; cursor: pointer; z-index: 10; transition: all .2s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) }
+.modal-close-btn:hover { background: var(--coral); color: #fff; border-color: var(--coral); transform: rotate(90deg) }
+.modal-content-grid { display: grid; grid-template-columns: 1.25fr 1fr; height: 100%; max-height: 90vh; overflow: hidden }
+.modal-media-pane { position: relative; background: #090e17; display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 360px }
+.modal-video, .modal-img { max-width: 100%; max-height: 80vh; width: 100%; height: 100%; object-fit: contain }
+.media-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fff; font-size: 28px; line-height: 1; display: grid; place-items: center; cursor: pointer; transition: all .2s; backdrop-filter: blur(4px); z-index: 5 }
+.media-nav-btn:hover { background: #fff; color: var(--ink); transform: translateY(-50%) scale(1.1) }
+.media-nav-btn.prev { left: 14px }
+.media-nav-btn.next { right: 14px }
+.modal-details-pane { padding: 36px 32px; overflow-y: auto; display: flex; flex-direction: column }
+.modal-top-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-right: 36px }
+.modal-year { font-family: var(--mono); font-size: 13px; color: var(--muted); font-weight: 700 }
+.item-counter { margin-left: auto; font-family: var(--mono); font-size: 12px; background: var(--sky); padding: 3px 10px; border-radius: 999px; color: var(--blue); font-weight: 700; white-space: nowrap }
+.modal-title { font-size: clamp(24px, 3vw, 32px); line-height: 1.15; margin-bottom: 14px; color: var(--ink) }
+.modal-desc { font-size: 15px; color: var(--muted); line-height: 1.6; margin-bottom: 22px }
+.modal-stats-box { background: var(--bg); border: 2px solid var(--line); border-radius: 18px; padding: 16px; margin-bottom: 22px }
+.stats-header { font-family: var(--mono); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--coral); margin-bottom: 12px }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px }
+.stat-chip { background: #fff; border: 1.5px solid var(--line); border-radius: 12px; padding: 8px 10px; display: flex; flex-direction: column }
+.st-val { font-weight: 800; font-size: 13px; color: var(--ink); line-height: 1.2 }
+.st-lbl { font-size: 11px; color: var(--muted); margin-top: 2px }
+.modal-tags-section { margin-top: auto; padding-top: 14px }
+.tags-label { display: block; font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em }
+.modal-tags { display: flex; gap: 8px; flex-wrap: wrap }
+.modal-footer-nav { display: flex; justify-content: space-between; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line) }
+.nav-btn-link { background: var(--bg); border: 2px solid var(--line); border-radius: 999px; padding: 8px 18px; font-weight: 800; font-size: 13px; color: var(--ink); cursor: pointer; transition: all .15s }
+.nav-btn-link:hover { background: var(--ink); color: #fff; border-color: var(--ink) }
+
+@media (max-width: 860px) {
+  .modal-content-grid { grid-template-columns: 1fr; overflow-y: auto }
+  .modal-media-pane { max-height: 45vh; min-height: 240px }
+  .modal-details-pane { padding: 24px 20px }
+  .gallery-grid { grid-template-columns: 1fr }
+}
+
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important } }
 @media (max-width: 920px) {
   .hero .wrap { grid-template-columns: 1fr }

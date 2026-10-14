@@ -23,12 +23,21 @@ def create_app():
     app.config["MAX_CONTENT_LENGTH"] = 64 * 1024  # requests are tiny JSON bodies
     app.json.sort_keys = False
 
-    CORS(app, resources={r"/api/*": {"origins": Config.FRONTEND_ORIGINS}},
-         expose_headers=["Content-Disposition"])
+    CORS(app, resources={
+        r"/api/*": {"origins": Config.FRONTEND_ORIGINS},
+        r"/assets/*": {"origins": Config.FRONTEND_ORIGINS}
+    }, expose_headers=["Content-Disposition"])
 
     limiter.init_app(app)
     app.register_blueprint(public.bp)
     app.register_blueprint(admin.bp)
+
+    @app.route("/assets/<path:filename>")
+    def direct_assets(filename):
+        import os
+        from flask import send_from_directory
+        assets_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "assets"))
+        return send_from_directory(assets_dir, filename)
 
     @app.errorhandler(ApiError)
     def api_error(e):

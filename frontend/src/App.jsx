@@ -3,6 +3,7 @@ import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-
 import Home from './pages/Home'
 import Register from './pages/Register'
 import Admin from './pages/admin/Admin'
+import GalleryPage from './pages/GalleryPage'
 
 function PreviewBar() {
   const nav = useNavigate()
@@ -27,6 +28,7 @@ export default function App() {
       <div className="page" key={pathname.split('/')[1] || 'home'}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<GalleryPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/" replace />} />
